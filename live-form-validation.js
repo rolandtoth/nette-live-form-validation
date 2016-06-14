@@ -194,6 +194,20 @@ LiveForm.removeError = function(el) {
 	var id = el.getAttribute('data-lfv-message-id');
 	if (id) {
 		var messageEl = this.getMessageElement(el);
+		
+		// if elememnt has no data-nette-rules class then get the first error message element (tpr)
+	        if (!el.getAttribute('data-nette-rules') && el.type !== 'submit') {
+	
+	            var prevEl;
+	
+	            while (prevEl = messageEl.previousSibling) {
+	                if(prevEl.tagName.toLowerCase() !== this.options.messageTag || !prevEl.id || prevEl.id.indexOf(this.options.messageIdPostfix) !== 0) {
+	                    break;
+	                }
+	                messageEl = prevEl;
+	            }
+	        }
+        
 		messageEl.innerHTML = '';
 		messageEl.className = '';
 	}
